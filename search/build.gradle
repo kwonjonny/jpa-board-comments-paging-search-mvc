@@ -1,0 +1,102 @@
+
+// Jpa Build Script
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'board.comment'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+// Annottation Proecessor Using
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Data Jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// Spring Boot Starter Web 
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	// Deve Tools 
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// My Sql Connector 
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// Srping Boot Test Starter Web 
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// QueryDsl Jakarta 
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+
+	// AnnotationProcessor 
+    annotationProcessor(
+            "jakarta.persistence:jakarta.persistence-api",
+
+            "jakarta.annotation:jakarta.annotation-api",
+
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+
+	// Thumnailator Using
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.19'
+
+	// Mdoel Mapper Using 
+	implementation 'org.modelmapper:modelmapper:3.1.1'
+
+	// http://localhost:8080/swagger-ui/index.html
+	// Swagger Using 
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+// QueryDsl Using
+sourceSets {
+    main {
+        java {
+            srcDirs = ["$projectDir/src/main/java", 
+			"$projectDir/build/generated/sources/annotationProcessor/java/main"]
+        }
+    }
+}
+
+// Task DeleteBuild Using Type: Delete
+task deleteBuild(type: Delete) {
+    delete "$projectDir/bin/generated-sources/annotations/"
+}
+
+// ComPile Java 
+compileJava.dependsOn('deleteBuild','clean')
+compileTestJava.dependsOn('clean')
