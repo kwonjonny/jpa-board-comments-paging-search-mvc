@@ -99,4 +99,4 @@ task deleteBuild(type: Delete) {
 
 // ComPile Java 
 compileJava.dependsOn('deleteBuild','clean')
-compileTestJava.dependsOn('clean')
+compileTestJava.dependsOn('deleteBuild','clean')
