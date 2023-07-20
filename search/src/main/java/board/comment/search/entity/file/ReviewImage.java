@@ -12,9 +12,9 @@ import lombok.ToString;
 @Builder
 @ToString
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProductImage {
+@AllArgsConstructor
+public class ReviewImage {
     private String fname;
     private int ord;
 }

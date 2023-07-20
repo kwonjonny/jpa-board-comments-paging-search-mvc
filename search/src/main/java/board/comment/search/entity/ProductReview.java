@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.hibernate.annotations.Comment;
 
-import board.comment.search.entity.file.ProductImage;
+import board.comment.search.entity.file.ReviewImage;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,72 +25,66 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "images")
-public class Product {
+@ToString(exclude = { "product", "images" })
+public class ProductReview {
 
     @Id
-    @Comment("상품 번호")
+    @Comment("리뷰 번호")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pno;
+    private Long rno;
 
     @NotNull
-    @Comment("상품 이름")
-    private String pname;
+    @Comment("리뷰 콘텐츠")
+    private String content;
 
     @NotNull
-    @Comment("상품 설명")
-    private String pdesc;
+    @Comment("리뷰 한 사람")
+    private String reviewer;
 
     @NotNull
-    @Comment("작성자")
-    private String writer;
+    @Comment("리뷰 점수")
+    private int score;
 
-    @NotBlank
-    @Comment("상품 가격")
-    private int price;
-
-    @Comment("삭제 여부")
-    private boolean delFlag;
+    // 한 리뷰는 한 상품에 달린다.
+    // @ManyToOne을 달아준다.
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
 
     /*
      * ElementCollection
      */
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
-    private List<ProductImage> images = new ArrayList<>();
+    private List<ReviewImage> images = new ArrayList<>();
 
     /*
      * addImage ord값 증가 시킨다
      */
     public void addImage(String name) {
-        ProductImage pImage = ProductImage.builder()
+        ReviewImage rImage = ReviewImage.builder()
                 .fname(name)
                 .ord(images.size())
                 .build();
-        images.add(pImage);
+        images.add(rImage);
     }
 
     /*
      * File Clear
      */
-    public void clearImages() {
+    public void clearIamges() {
         images.clear();
-
     }
 
-    public void changePrice(int price) {
-        this.price = price;
+    public void changeContet(String content) {
+        this.content = content;
     }
 
-    public void changePname(String pname) {
-        this.pname = pname;
+    public void changeReview(String reviewer) {
+        this.reviewer = reviewer;
     }
 
-    public void changePdesc(String pdesc) {
-        this.pdesc = pdesc;
+    public void changeScore(int score) {
+        this.score = score;
     }
 
-    public void changeDeleteFlag(boolean delFlag) {
-        this.delFlag = delFlag;
-    }
 }

@@ -39,6 +39,10 @@ public class ProductDTO {
     @Comment("상품 가격")
     private int price;
 
+    @NonNull
+    @Comment("작성자")
+    private String writer;
+
     @Builder.Default
     private List<String> images = new ArrayList<>();
 

@@ -35,7 +35,6 @@ public class ProductRepositoryTests {
     private String uuid;
 
     private Product product;
-    private Product updateProduct;
 
     @BeforeEach
     public void setUp() {
@@ -43,7 +42,7 @@ public class ProductRepositoryTests {
         uuid = UUID.randomUUID().toString();
 
         product = Product.builder()
-                .pname(TEST_PRODUCT_FILE_NAME)
+                .pname(TEST_PRODUCT_NAME)
                 .pdesc(TEST_PRODUCT_DESC)
                 .writer(TEST_PORUDCT_WRITER)
                 .price(TEST_PRODUCT_PRICE)
@@ -55,8 +54,8 @@ public class ProductRepositoryTests {
     @Transactional
     @DisplayName("상품 생성 테스트 레포지토리")
     public void createTestProductRepository() {
-        log.info("=== Start Create Product Test Repository ===");
         // GVIEN
+        log.info("=== Start Create Product Test Repository ===");
         product.addImage(uuid + "_" + TEST_PRODUCT_FILE_NAME);
         // WHEN
         Product savedProduct = productRepository.save(product);
@@ -74,10 +73,11 @@ public class ProductRepositoryTests {
     @Transactional
     @DisplayName("상품 업데이트 테스트 레포지토리")
     public void updateTestProductRepository() {
+        // GIVEN
         log.info("=== Start Update Product Test Repository");
+        // WHEN 
         Optional<Product> result = productRepository.findById(TEST_PNO);
         Product product = result.orElseThrow();
-
         product.changePrice(TEST_PRODUCT_PRICE);
         product.changePdesc(TEST_PRODUCT_DESC);
         product.changePname(TEST_PRODUCT_FILE_NAME);

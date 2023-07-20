@@ -17,8 +17,8 @@ import board.comment.search.dto.page.PageResponseDTO;
 import board.comment.search.dto.product.ProductListDTO;
 import board.comment.search.entity.Product;
 import board.comment.search.entity.QProduct;
+import board.comment.search.entity.QProductReview;
 import board.comment.search.entity.file.QProductImage;
-import board.comment.search.entity.file.QProductReview;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
